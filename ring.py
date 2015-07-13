@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
+from ringexception import *
 
 class Distance(object):
   def __init__(self, distance):
@@ -42,6 +43,7 @@ class Ring(object):
       "rdistance": len(self.data) - self.cursor
     })
 
+  @self._updateAll
   def rspin(self, step):
     """
     cursor顺时针旋转
@@ -51,6 +53,7 @@ class Ring(object):
     self.cursor = step % len(self.data)
     return self
 
+  @self._updateAll
   def lspin(self, step):
     """
     cursor逆时针旋转
@@ -63,6 +66,11 @@ class Ring(object):
   def _spin(self, step):
     if step < 0:
       raise StepTypeError
+
+  def _updateAll(self, func):
+    def _deco(*args):
+      return func(*args)
+    return _deco
 
   def _updateSize(self):
     pass
